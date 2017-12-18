@@ -1,0 +1,179 @@
+<!-- JS and HTML5 and CSS -->
+<!DOCTYPE HTML>
+<html>
+    
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+</head>
+    
+<style>
+    #input{
+        background-color: #CFB53B;
+        border-radius: 3px;
+        margin: auto;
+        max-width: 85%;
+    }
+    #output{
+        background-color: #663399;
+        border-radius: 3px;
+        margin: auto;
+        max-width: 85%;
+    }
+    #loader{
+        margin: auto;
+        max-width: 85%;
+    }
+    #bigdiv{
+        background-color: #66726d;
+        border-radius: 5px;
+        margin: auto;
+        max-width: 15%;
+        padding-bottom: 30px;
+        padding-top: 5px;
+    }
+</style>  
+    
+    
+
+<title>Assignment 3</title>
+<body>
+    <div id = bigdiv>
+        <h3 align = center>Assignment 3:<br>AJAX Weather</h3>
+        <div class = "input" id = "input">
+            <fieldset id="field"><legend>Area</legend>
+
+            Zip Code:  <input type=text name = zipcode id = zipcode placeholder="Zip Code" required><br>
+
+            <input type = button value = "Get Weather Data" name = weatherBtn id = weatherBtn>
+
+            </fieldset>
+
+        </div>
+
+
+        <div class = loader id = loader></div>
+        <div class = "output" id = "output">
+            <fieldset id="field"><legend>Weather Data</legend>
+                Please enter a zip code above.
+
+            </fieldset>
+        </div>
+    </div>
+</body>
+    
+    
+<script type="text/javascript"> 
+
+    $(document).ready( function(){
+
+
+        $("#weatherBtn").click( function() { 
+
+            var s = $("#zipcode").val() ;  
+
+            $.ajax({			//Syntax warning: beware use commas in JSON argument below (not semi-colons)
+
+                    type: 		"GET"  ,
+                    url: 		"assignment3form.php",
+                    data: 		"zipcode=" + s ,
+
+                    beforeSend: function(){ 
+                        $(".loader").html(`
+                            <style>
+                            .loader {
+
+                                border: 20px solid #aaaaaa;	
+
+                                width:  100px;
+                                height: 100px;
+
+                                border-top: 20px solid blue; 
+
+                                background-color: red ;
+
+                                overflow:hidden;
+
+                                border-radius: 50%;	
+
+                                animation: AAA 2s linear infinite;
+                            }
+
+                            @keyframes AAA {
+                              0%   { transform: rotate(0deg)  ; }
+                              100% { transform: rotate(360deg); }
+                            }
+
+                            </style>
+                        `);
+                        
+                        
+                        
+                        $(".output").html("");
+                    
+                    },
+
+                    error: 		function(xhr, status, error) {
+                                    alert( "Error Mesaage:  \r\nNumeric code is: "  + xhr.status + " \r\nError is " + error); 	},
+
+                    success: 	function(result) {
+                        $(".loader").html(`
+                            <style>
+                            </style>
+                        `);
+                        var w = JSON.parse(result);
+                        report = "<fieldset><legend>Weather Data</legend>";
+                        report += "<u>The current Weather for:</u><br>"
+                        
+                        //City
+                        city = w.name;
+                        report += "City: " + city;
+                        
+                        //Separate Data with Line
+                        report += "<hr>";
+                        
+                        //Temperature
+                        temp = w.main.temp;
+                        temp = (parseFloat(temp) - 273.15) * 9/5 + 32;
+                        report += "Temp: " + temp.toFixed(0) + "&deg;F";
+                        
+                        //Humidity
+                        humidity = w.main.humidity;
+                        report += "<br>Humidity: " + humidity + "%";
+                        
+                        //Description
+                        description = w.weather[0].description;
+                        report += "<br>Description: " + description;
+                        
+                        //Separate Data with Line
+                        report += "<hr>";
+                        
+                        //Wind Speed
+                        windspeed = w.wind.speed;
+                        report += "<br>Wind Speed: " + windspeed + "mph";
+                        
+                        //DT
+                        dt = w.dt;
+                        report += "<br>DT: " + dt;
+                        
+                        //Sunrise
+                        sunrise = w.sys.sunrise;
+                        report += "<br>Sunrise: " + sunrise;
+                        
+                        //Sunset
+                        sunset = w.sys.sunset;
+                        report += "<br>Sunset: " + sunset;
+                        
+                        
+                        report += "</fieldset>";
+                        $("#output").html(report);
+                    }
+            });
+        });
+
+
+    });
+
+</script>    
+    
+        
+</html>

@@ -2,7 +2,7 @@
 
 $zipcode = $_GET['zipcode'];
 
-$url = "http://api.openweathermap.org/data/2.5/weather?zip=".$zipcode.",us&APPID=fab414031e80b4f44132633f3d50ffad"; 
+$url = "http://api.openweathermap.org/data/2.5/weather?zip=".$zipcode.",INSERTAPICODEHERE; 
 
 
 //Your API Key has to be obtained from openweathermap.org

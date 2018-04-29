@@ -14,7 +14,7 @@ $contents = "";
 while ( $more = fread ( $fp, 1000  ) ) {
    $contents .=  $more ;
 }
-     //this overrides commented earlier hardocded $data 
+     //this overrides commented earlier hardcoded $data 
 
 echo $contents ; 
 
